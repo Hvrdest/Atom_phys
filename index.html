@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Атом физикасы — тест</title>
+<style>
+:root{--n:#142b4d;--b:#28649e;--p:#edf4fc;--ink:#172235}*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#eaf1fa,#f8fafc);font-family:system-ui,sans-serif;color:var(--ink)}
+main{max-width:850px;margin:auto;padding:24px 15px 45px}.hero{background:linear-gradient(120deg,#102544,#24558b);color:white;padding:28px;border-radius:22px}
+.hero h1{font-size:clamp(1.8rem,5vw,2.5rem);margin:8px 0}.hero p{line-height:1.6;color:#e1ecf8}
+.pill{display:inline-block;padding:6px 11px;border:1px solid #ffffff55;border-radius:30px;margin:8px 5px 0 0;font-size:.85rem}
+.card{background:white;border:1px solid #dce6f2;border-radius:18px;padding:22px;margin-top:18px;box-shadow:0 8px 24px #17365a0c}
+.meta{display:flex;justify-content:space-between;color:#65748a;font-size:.9rem}.track{height:8px;background:#e8eef6;border-radius:20px;margin:12px 0 22px;overflow:hidden}.fill{height:100%;background:#4387c5;width:0}
+.topic{font-size:.78rem;color:#28649e;font-weight:800;text-transform:uppercase;letter-spacing:.08em}h2{font-size:1.2rem;line-height:1.5}
+.answers{display:grid;gap:10px}.answer{display:flex;gap:12px;text-align:left;background:#f8fafc;border:1.5px solid #dce5ef;border-radius:12px;padding:13px;font:inherit;color:var(--ink);cursor:pointer}
+.letter{flex:0 0 27px;height:27px;border-radius:8px;background:#e5eef8;color:#24558b;display:grid;place-items:center;font-weight:800}
+.answer.correct{border-color:#25a36f;background:#effaf5}.answer.wrong{border-color:#d56b6b;background:#fff4f3}.answer:disabled{opacity:1;cursor:default}
+.feedback{display:none;padding:13px;border-radius:12px;margin-top:14px;line-height:1.5}.feedback.show{display:block}.good{background:#eaf8f1;color:#126342}.bad{background:#fff2f0;color:#963d36}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:18px}button.primary,button.secondary{border:0;border-radius:11px;padding:12px 17px;font-weight:750;font-size:.95rem;cursor:pointer}.primary{background:var(--n);color:white}.primary:disabled{opacity:.35}.secondary{background:#edf2f8;color:#29425f}
+.hidden{display:none}.result{text-align:center;padding:28px 15px}.score{font-size:3.2rem;font-weight:850;color:var(--n)}.review{text-align:left;margin-top:20px}.item{border-top:1px solid #e6edf5;padding:12px 0;line-height:1.5}footer{text-align:center;color:#75849a;font-size:.85rem;margin-top:20px}
+@media(max-width:520px){.card{padding:17px}.hero{padding:22px}.controls button{flex:1}}
+</style></head><body><main>
+<header class="hero"><div style="color:#c9def7;font-weight:700;letter-spacing:.1em">ФИЗИКА • ИНТЕРАКТИВТІ ТЕСТ</div>
+<h1>Атом физикасы</h1><p>Резерфорд тәжірибесі, Бор постулаттары және Франк–Герц тәжірибесі бойынша 10 сұрақ. Біліміңді тексеріп, соңында нәтижеңді көр!</p>
+<span class="pill">10 сұрақ</span><span class="pill">Бір дұрыс жауап</span><span class="pill">Автоматты бағалау</span></header>
+<section class="card" id="quiz"><div class="meta"><span id="counter">1 / 10 сұрақ</span><span id="scoreLive">Ұпай: 0</span></div><div class="track"><div class="fill" id="progress"></div></div>
+<div class="topic" id="topic"></div><h2 id="question"></h2><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div>
+<div class="controls"><button class="secondary" id="restartTop">Қайта бастау</button><button class="primary" id="next" disabled>Келесі сұрақ →</button></div></section>
+<section class="card result hidden" id="result"><div class="topic">Тест аяқталды</div><div class="score" id="finalScore">0/10</div><h2 id="resultTitle">Жарайсың!</h2><p id="resultText"></p><button class="primary" id="again">Тестті қайта өту</button><div class="review" id="review"></div></section>
+<footer>Оқу мақсатында жасалған интерактивті тест</footer></main>
+<script>
+const Q=[
+["Резерфорд тәжірибесі","Резерфорд тәжірибесінде альфа-бөлшектердің көпшілігі алтын фольгадан қалай өтті?",["Үлкен бұрышқа шашырады","Түзу бағытқа жуық өтті","Толығымен кері қайтты","Фольгада жұтылып қалды"],1,"Атом көлемінің басым бөлігі бос кеңістік болғандықтан, альфа-бөлшектердің көпшілігі түзу бағытқа жуық өтеді."],
+["Резерфорд тәжірибесі","Альфа-бөлшектердің аз бөлігі үлкен бұрышқа шашырауы нені көрсетті?",["Атомда электрон жоқ екенін","Атомның тығыз оң зарядталған ядросы бар екенін","Ядро теріс зарядталғанын","Атом түгелдей бос кеңістік екенін"],1,"Үлкен ауытқу оң зарядталған альфа-бөлшектердің өте кішкентай, оң зарядталған әрі тығыз ядромен әсерлесуінен болады."],
+["Бор постулаттары","Бор моделінде электрон стационар күйде болғанда не болады?",["Үздіксіз энергия шығарады","Ядроға құлайды","Энергия шығармайды","Массасын жоғалтады"],2,"Бордың бірінші постулаты бойынша стационар күйдегі электрон сәуле шығармайды."],
+["Бор постулаттары","Электрон жоғары энергетикалық деңгейге өткенде атом не істейді?",["Фотон жұтады","Фотон шығарады","Ядро ыдырайды","Электрон жоғалады"],0,"Жоғары деңгейге өту үшін электрон энергия алуы керек, сондықтан атом фотон жұтады."],
+["Бор постулаттары","Сутегі атомының энергия деңгейлері қандай формуламен анықталады?",["Eₙ = −13,6n² эВ","Eₙ = −13,6/n² эВ","Eₙ = 13,6/n эВ","Eₙ = −n/13,6 эВ"],1,"Сутегі атомы үшін Бор моделіндегі энергия деңгейі Eₙ = −13,6/n² эВ."],
+["Фотон энергиясы","Электрон n = 3 деңгейден n = 2 деңгейге өтті. Фотон энергиясы қанша? Eₙ = −13,6/n² эВ.",["1,89 эВ","3,40 эВ","10,20 эВ","12,09 эВ"],0,"E₃ ≈ −1,51 эВ, E₂ = −3,40 эВ. Айырмасы |E₃ − E₂| ≈ 1,89 эВ."],
+["Франк–Герц тәжірибесі","Классикалық Франк–Герц тәжірибесінде алғашқы қоздыру энергиясы шамамен 4,9 эВ болатын бу қайсы?",["Сутегі","Гелий","Сынап буы","Неон"],2,"Классикалық тәжірибеде сынап буы қолданылып, алғашқы қоздыру энергиясы шамамен 4,9 эВ екені анықталды."],
+["Франк–Герц тәжірибесі","Франк–Герц тәжірибесінде анод тогының төмендеуі нені білдіреді?",["Электрондар атомдарды иондамайтынын","Электрондар соқтығыста энергиясын атомдарға бергенін","Атомдар энергияны үздіксіз жұтатынын","Электрон заряды өзгергенін"],1,"Серпімсіз соқтығыс кезінде электрон атомды қоздыруға энергия береді; соның салдарынан коллекторға жететін электрондар азайып, ток төмендеуі мүмкін."],
+["Энергия және кернеу","Электронға 4,9 эВ энергия беру үшін қандай үдетуші кернеу қажет?",["0,49 В","4,9 В","9,8 В","49 В"],1,"Электрон үшін энергияның эВ-пен алынған сандық мәні үдетуші кернеудің вольтпен алынған мәніне тең: 4,9 эВ ↔ 4,9 В."],
+["Қорытынды","Резерфорд, Бор және Франк–Герц зерттеулерінің ортақ маңызы қандай?",["Атомның құрылымы мен энергиясын түсінуге жол ашты","Электронның толқын емес екенін дәлелдеді","Барлық атомдардың ядросы бірдей екенін көрсетті","Атомда энергетикалық деңгейлер жоқ екенін дәлелдеді"],0,"Резерфорд ядролық құрылымды ашуға үлес қосты, Бор энергия деңгейлерін сипаттады, Франк–Герц энергияның дискретті жұтылуын растады."]
+];
+let i=0,score=0,selected=null,records=[];const $=x=>document.getElementById(x);
+function render(){selected=null;let q=Q[i];$("counter").textContent=(i+1)+" / 10 сұрақ";$("scoreLive").textContent="Ұпай: "+score;$("progress").style.width=(i/10*100)+"%";$("topic").textContent=q[0];$("question").textContent=q[1];$("answers").innerHTML="";$("feedback").className="feedback";$("feedback").textContent="";$("next").disabled=true;$("next").textContent=i===9?"Нәтижені көру":"Келесі сұрақ →";q[2].forEach((v,j)=>{let b=document.createElement("button");b.className="answer";b.innerHTML='<span class="letter">'+ "ABCD"[j] +'</span><span></span>';b.querySelector("span:last-child").textContent=v;b.onclick=()=>choose(j);$("answers").appendChild(b)})}
+function choose(j){if(selected!==null)return;selected=j;let q=Q[i],ok=j===q[3];if(ok)score++;records.push({q:q[1],a:q[2][j],c:q[2][q[3]],ok});[...$("answers").children].forEach((b,k)=>{b.disabled=true;if(k===q[3])b.classList.add("correct");if(k===j&&!ok)b.classList.add("wrong")});$("scoreLive").textContent="Ұпай: "+score;$("feedback").textContent=(ok?"Дұрыс! ":"Қате. Дұрыс жауап: "+q[2][q[3]]+". ")+q[4];$("feedback").className="feedback show "+(ok?"good":"bad");$("next").disabled=false}
+function finish(){$("quiz").classList.add("hidden");$("result").classList.remove("hidden");$("finalScore").textContent=score+"/10";$("resultTitle").textContent=score===10?"Тамаша нәтиже!":score>=7?"Жақсы жұмыс!":score>=5?"Жаман емес!":"Қайталап көр!";$("resultText").textContent="Сен 10 сұрақтың "+score+"-іне дұрыс жауап бердің. Қате жауаптарды қарап, тақырыпты қайталап шық.";$("review").innerHTML="<h3>Жауаптарды талдау</h3>"+records.map((r,k)=>'<div class="item"><b>'+(k+1)+". "+(r.ok?"✓ ":"✗ ")+r.q+'</b><br>Сенің жауабың: '+r.a+'<br>Дұрыс жауап: '+r.c+'</div>').join("")}
+function restart(){i=0;score=0;records=[];$("result").classList.add("hidden");$("quiz").classList.remove("hidden");render()}
+$("next").onclick=()=>{if(i===9)finish();else{i++;render()}};$("restartTop").onclick=restart;$("again").onclick=restart;render();
+</script></body></html>
